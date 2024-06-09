@@ -1,6 +1,7 @@
 import tkinter as tk
 from board import Board
-from config import CELL_SIZE, GAME_WINDOW_SIZE, FIGURES_COUNT, POINTS_PER_FIGURE, FIGURE_GAP
+from config import CELL_SIZE, GAME_WINDOW_SIZE, FIGURES_COUNT, POINTS_PER_FIGURE, FIGURE_GAP, POINTS_PER_ROW, \
+    POINTS_PER_COL, BOARD_X_OFFSET, BOARD_Y_OFFSET, FIGURE_LIST_Y_OFFSET
 from figures import Figure
 from gameover import GameOverWindow
 from tkinter import PhotoImage, Button
@@ -31,11 +32,11 @@ class Game:
         self.canvas.create_image(0, 0, anchor="nw", image=self.background_image)
 
         # Инициализация доски с смещениями
-        self.board = Board(self.canvas, 100, 120)
+        self.board = Board(self.canvas, BOARD_X_OFFSET, BOARD_Y_OFFSET)
         self.board.draw_board()
 
         # Создание метки для отображения счета
-        self.score_label = tk.Label(self.master, text="Score: 0", font=("tahoma", 40), bg="#E0FFFF")
+        self.score_label = tk.Label(self.master, text="Счет: 0", font=("tahoma", 30), bg="#E0FFFF")
         self.score_label.place(x=30, y=30)
 
         # Кнопки управления игрой
@@ -66,10 +67,10 @@ class Game:
         y_offset = 150
         for idx in range(FIGURES_COUNT):
             tag = f"figure_{idx}"
-            fig = Figure(tag, self.canvas, 650, y_offset)
+            fig = Figure(tag, self.canvas, FIGURE_LIST_Y_OFFSET, y_offset)
             self.figures_in_sidebar.append(fig)
             self.figures.append(fig)
-            self.draw_figure_widget(fig, 650, y_offset)
+            self.draw_figure_widget(fig, FIGURE_LIST_Y_OFFSET, y_offset)
             y_offset += fig.size[1] * CELL_SIZE + FIGURE_GAP
 
         if self.board.check_game_over(self.figures):
@@ -84,7 +85,7 @@ class Game:
         """Обновляет отображение боковой панели с фигурами после изменений."""
         y_offset = 150
         for fig in self.figures_in_sidebar:
-            self.draw_figure_widget(fig, 650, y_offset)
+            self.draw_figure_widget(fig, FIGURE_LIST_Y_OFFSET, y_offset)
             y_offset += fig.size[1] * CELL_SIZE + FIGURE_GAP
 
     def pick_figure(self, event, figure):
@@ -111,8 +112,9 @@ class Game:
                 self.update_figure_display()  # Обновить отображение боковой панели
             if self.board.can_place_figure(self.active_figure):  # теперь вся информация о фигуре
                 # хранится в ней (в объекте), как и должно быть
-                self.board.place_figure_on_board(self.active_figure)
-                self.update_score(POINTS_PER_FIGURE)  # повышаем счёт из-за поставленной фигуры
+                removed_rows, removed_cols = self.board.place_figure_on_board(self.active_figure)
+                # повышаем счёт
+                self.update_score(POINTS_PER_FIGURE + removed_rows * POINTS_PER_ROW + removed_cols * POINTS_PER_COL)
                 self.figures.remove(self.active_figure)
                 self.active_figure.clear()  # удаляем помещённую фигуру
                 if len(self.figures) == 0:  # если поместили вне фигуры
@@ -122,7 +124,7 @@ class Game:
 
     def update_score(self, amount):
         self.score += amount
-        self.score_label.config(text=f"{self.score}")
+        self.score_label.config(text=f"Счет: {self.score}")
 
     def reset_game(self):
         self.board.clear_board()

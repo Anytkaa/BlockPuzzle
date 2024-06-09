@@ -43,7 +43,7 @@ class Board:
             if 0 <= x < BOARD_WIDTH and 0 <= y < BOARD_HEIGHT:
                 self.cells[y][x]['color'] = figure.color
                 self.cells[y][x]['occupied'] = True
-        self.draw_board()
+        return self.remove_complete_lines()
 
     def clear_board(self):
         """Сбрасывает все ячейки доски."""
@@ -65,3 +65,36 @@ class Board:
                 return False
         # Если не нашли ни одной подходящей комбинации, возвращаем True - игра окончена
         return True
+
+    def remove_complete_lines(self):
+        """Проверяет все строки и столбцы на полное заполнение и очищает их при необходимости."""
+        rows_to_clear = []
+        cols_to_clear = []
+
+        # Проверка строк на полное заполнение
+        for y in range(BOARD_HEIGHT):
+            if all(self.cells[y][x]['occupied'] for x in range(BOARD_WIDTH)):
+                rows_to_clear.append(y)
+
+        # Проверка столбцов на полное заполнение
+        for x in range(BOARD_WIDTH):
+            if all(self.cells[y][x]['occupied'] for y in range(BOARD_HEIGHT)):
+                cols_to_clear.append(x)
+
+        # Очистка полностью заполненных строк
+        for y in rows_to_clear:
+            for x in range(BOARD_WIDTH):
+                self.cells[y][x]['color'] = 'white'
+                self.cells[y][x]['occupied'] = False
+
+        # Очистка полностью заполненных столбцов
+        for x in cols_to_clear:
+            for y in range(BOARD_HEIGHT):
+                self.cells[y][x]['color'] = 'white'
+                self.cells[y][x]['occupied'] = False
+
+        # Перерисовка доски после удаления строк и столбцов
+        self.draw_board()
+
+        # Возвращаем количество удаленных строк и столбцов
+        return len(rows_to_clear), len(cols_to_clear)
