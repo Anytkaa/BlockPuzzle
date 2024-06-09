@@ -22,7 +22,7 @@ class Board:
 
     def can_place_figure(self, figure):
         """Проверяет, можно ли поместить фигуру в текущее положение."""
-        x0, y0 = (figure.x - self.x_offset) // CELL_SIZE, (figure.y - self.y_offset) // CELL_SIZE
+        x0, y0 = round((figure.x - self.x_offset) / CELL_SIZE), round((figure.y - self.y_offset) / CELL_SIZE)
         for cell in figure.get_shape_positions():
             x, y = x0 + int(cell[0]), y0 + int(cell[1])
             if x < 0 or x >= BOARD_WIDTH or y < 0 or y >= BOARD_HEIGHT or self.cells[y][x]['occupied']:
@@ -31,7 +31,7 @@ class Board:
 
     def place_figure_on_board(self, figure):
         """Помечает ячейки занятыми и окрашивает их в цвет фигуры."""
-        x0, y0 = (figure.x - self.x_offset) // CELL_SIZE, (figure.y - self.y_offset) // CELL_SIZE
+        x0, y0 = round((figure.x - self.x_offset) / CELL_SIZE), round((figure.y - self.y_offset) / CELL_SIZE)
         for cell in figure.get_shape_positions():
             x, y = x0 + int(cell[0]), y0 + int(cell[1])
             if 0 <= x < BOARD_WIDTH and 0 <= y < BOARD_HEIGHT:
