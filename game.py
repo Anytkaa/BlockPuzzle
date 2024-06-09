@@ -3,7 +3,7 @@ from board import Board
 from config import CELL_SIZE, GAME_WINDOW_SIZE, FIGURES_COUNT, POINTS_PER_FIGURE, FIGURE_GAP
 from figures import Figure
 from gameover import GameOverWindow
-from tkinter import PhotoImage, Label, Button
+from tkinter import PhotoImage, Button
 
 
 class Game:
@@ -52,6 +52,7 @@ class Game:
         # Вызов методов инициализации
         self.setup_bindings()
         self.create_new_set_of_figures()
+        self.start()
 
     def start(self):
         self.board.draw_board()
@@ -113,9 +114,10 @@ class Game:
                 self.board.place_figure_on_board(self.active_figure)
                 self.update_score(POINTS_PER_FIGURE)  # повышаем счёт из-за поставленной фигуры
                 self.figures.remove(self.active_figure)
-                if len(self.figures) == 0:  # если поместили вне фигуры
-                    self.create_new_set_of_figures()
                 self.active_figure.clear()  # удаляем помещённую фигуру
+                if len(self.figures) == 0:  # если поместили вне фигуры
+                    self.active_figure = None
+                    self.create_new_set_of_figures()
             self.active_figure = None
 
     def update_score(self, amount):
@@ -126,6 +128,12 @@ class Game:
         self.board.clear_board()
         self.score = 0
         self.update_score(0)
+        for fig in self.figures:
+            fig.clear()
+        self.active_figure = None
+        self.figures.clear()
+        self.figures_in_sidebar.clear()
+        self.create_new_set_of_figures()
         self.start()
 
     def show_game_over_message(self):
