@@ -23,7 +23,6 @@ class Figure:
     def __init__(self, tag, canvas=None, x=0, y=0):
         self.tag = tag
         self.type = random.choice(list(figures.keys()))
-        print(self.type)
         self.color = figures[self.type]['color']
         self.shape = figures[self.type]['shape']
         self.size = figures[self.type]['size']

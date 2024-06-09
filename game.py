@@ -140,7 +140,6 @@ class Game:
         self.start()
 
     def show_game_over_message(self):
-        print("GAME OVER")
         GameOverWindow(self.master, self.score, self.reset_game)
         pass
 
