@@ -12,7 +12,7 @@ class Game:
         self.master.geometry(GAME_WINDOW_SIZE)
         self.canvas = tk.Canvas(self.master, width=600, height=600, bg="white")
         self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.board = Board(self.canvas, self.update_score)
+        self.board = Board(self.canvas, 100, 120)
         self.score_label = tk.Label(self.master, text="Score: 0", font=("Arial", 24))
         self.score_label.pack(side=tk.TOP, pady=20)
         self.figures = []  # Список фигур в боковой панели
@@ -24,7 +24,7 @@ class Game:
         self.create_new_set_of_figures()
 
     def start(self):
-        self.board.draw_board(BOARD_WIDTH, BOARD_HEIGHT, CELL_SIZE, 100, 120)
+        self.board.draw_board()
 
     def setup_bindings(self):
         self.canvas.bind("<B1-Motion>", self.motion)
