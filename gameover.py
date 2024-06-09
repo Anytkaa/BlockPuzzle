@@ -2,6 +2,9 @@ import tkinter as tk
 
 
 class GameOverWindow:
+    """Класс, отвечающий за отображение окна с сообщением о конце игры.
+    Это окно включает информацию о счете и кнопки для начала новой игры."""
+
     def __init__(self, master, score, reset_callback):
         self.master = master
         self.score = score

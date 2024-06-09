@@ -1,13 +1,20 @@
 import tkinter as tk
+from tkinter import PhotoImage, Button
+
 from board import Board
 from config import CELL_SIZE, GAME_WINDOW_SIZE, FIGURES_COUNT, POINTS_PER_FIGURE, FIGURE_GAP, POINTS_PER_ROW, \
     POINTS_PER_COL, BOARD_X_OFFSET, BOARD_Y_OFFSET, FIGURE_LIST_Y_OFFSET
 from figures import Figure
 from gameover import GameOverWindow
-from tkinter import PhotoImage, Button
 
 
 class Game:
+    """Основной класс, управляющий игровым процессом.
+    Этот класс инициализирует игровое поле, управляет событиями игры
+    (например, нажатиями кнопок мыши для перемещения фигур),
+    обрабатывает логику начала новой игры, сброса текущей игры и окончания игры.
+    Также управляет выводом счета и обновлением игровых элементов."""
+
     def __init__(self, master):
         # Переменные
         self.score = 0

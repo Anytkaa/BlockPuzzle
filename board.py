@@ -1,8 +1,15 @@
-from config import CELL_SIZE, BOARD_WIDTH, BOARD_HEIGHT
 from itertools import product
+
+from config import CELL_SIZE, BOARD_WIDTH, BOARD_HEIGHT
 
 
 class Board:
+    """Класс управляет игровым полем для пазл-игры.
+    Он отвечает за отображение ячеек на игровом полотне,
+    проверку возможности размещения фигур в определённых позициях,
+    а также за обновление состояния поля при размещении фигур.
+    Также включает методы для очистки строки/столбца, когда они полностью заполнены."""
+
     def __init__(self, canvas, x_offset, y_offset):
         self.canvas = canvas
         self.x_offset = x_offset

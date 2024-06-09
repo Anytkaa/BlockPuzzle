@@ -6,6 +6,9 @@ from training import show_rules
 
 
 class MainMenu:
+    """Класс для создания и управления главным меню игры.
+    Содержит методы для настройки и отображения кнопок
+    "Начать игру", "Правила игры", "Выход"."""
     def __init__(self, root):
         self.root = root
         self.setup_menu()

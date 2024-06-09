@@ -5,6 +5,8 @@ from config import RULE_WINDOW_SIZE
 
 
 class RulesWindow:
+    """Класс, отвечающий за демонстрацию правил игры пользователю."""
+
     def __init__(self, master):
         self.master = master
         self.setup_window()
