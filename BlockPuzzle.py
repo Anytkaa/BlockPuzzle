@@ -2,7 +2,7 @@ import tkinter as tk
 import random
 from tkinter import Label, Button, Canvas, messagebox, Toplevel, PhotoImage
 
-#Global variables
+# Global variables
 CELL_SIZE = 60
 BOARD_WIDTH = 9
 BOARD_HEIGHT = 9
@@ -12,48 +12,50 @@ figure_ids = []
 placed_figures_count = 0
 occupied_cells = {}
 original_coords = {}
-start_x = 0 # Начальная позиция X для новой фигуры
-start_y = 0 # Начальная позиция Y для новой фигуры
+start_x = 0  # Начальная позиция X для новой фигуры
+start_y = 0  # Начальная позиция Y для новой фигуры
 ROWS = 10
 COLS = 10
 board = [[' ' for _ in range(COLS)] for _ in range(ROWS)]
 
-#Определение цветов и фигур
+# Определение цветов и фигур
 colors = {
-'O': 'Turquoise2',
-'I': 'palegreen',
-'J': 'coral',
-'L': 'red2',
-'T': 'gold',
-'Z': 'Lightskyblue',
-'S': 'hotpink1',
-'E': 'orchid1',
-'G': 'brown1',
-'I_vert': 'cornflowerblue',
-'T_right': 'seagreen1',
-'T_vnis': 'mediumpurple1'
+    'O': 'Turquoise2',
+    'I': 'palegreen',
+    'J': 'coral',
+    'L': 'red2',
+    'T': 'gold',
+    'Z': 'Lightskyblue',
+    'S': 'hotpink1',
+    'E': 'orchid1',
+    'G': 'brown1',
+    'I_vert': 'cornflowerblue',
+    'T_right': 'seagreen1',
+    'T_vnis': 'mediumpurple1'
 }
 
 figures = {
-'O': ['02', '12', '01', '11'],
-'I': ['00', '01', '02', '03'],
-'J': ['01', '11', '21', '22'],
-'L': ['21', '11', '01', '00'],
-'T': ['11', '01', '21', '10'],
-'Z': ['01', '11', '10', '20'],
-'S': ['10', '11', '01', '02'],
-'E': ['00', '01', '02', '10'],  
-'G': ['01', '11', '21', '02'],
-'I_vert': ['00', '10', '20', '30'],
-'T_right': ['10', '11', '12', '01'], 
-'T_vnis': ['01', '11', '21', '12'],  
+    'O': ['02', '12', '01', '11'],
+    'I': ['00', '01', '02', '03'],
+    'J': ['01', '11', '21', '22'],
+    'L': ['21', '11', '01', '00'],
+    'T': ['11', '01', '21', '10'],
+    'Z': ['01', '11', '10', '20'],
+    'S': ['10', '11', '01', '02'],
+    'E': ['00', '01', '02', '10'],
+    'G': ['01', '11', '21', '02'],
+    'I_vert': ['00', '10', '20', '30'],
+    'T_right': ['10', '11', '12', '01'],
+    'T_vnis': ['01', '11', '21', '12'],
 }
+
 
 def start_game():
     global SCORE, figure_ids, occupied_cells, placed_figures_count, selected_figure_ids, start_x, start_y, board
+
     def exit_game():
         reset_game()
-        root.destroy() 
+        root.destroy()
 
     def center_window(window, offset_y=50):
         window.update_idletasks()
@@ -105,11 +107,11 @@ def start_game():
             cell_x = int(cell[0]) + x
             cell_y = int(cell[1]) + y
             # Если координаты клетки выходят за границы доски или уже заняты, возвращаем False
-            if cell_x < 0 or cell_x >= BOARD_WIDTH or cell_y < 0 or cell_y >= BOARD_HEIGHT or (cell_x, cell_y) in occupied_cells:
+            if cell_x < 0 or cell_x >= BOARD_WIDTH or cell_y < 0 or cell_y >= BOARD_HEIGHT or (
+                    cell_x, cell_y) in occupied_cells:
                 return False
         # Если все клетки для фигуры свободны и в пределах доски, возвращаем True
         return True
-
 
     def place_figure_on_board(figure_id, x, y):
         # Размещаем фигуру на доске и обновляем occupied_cells
@@ -120,8 +122,7 @@ def start_game():
         else:
             # Если фигура размещена на занятые клетки, возвращаем ее на исходное место
             board_canvas.coords(figure_id, original_coords[figure_id])
-      
-    
+
     def remove_complete_lines():
         global SCORE, figure_ids, occupied_cells
         # Создаем список для хранения индексов строк и столбцов, которые нужно удалить
@@ -175,7 +176,7 @@ def start_game():
 
         # После размещения новых фигур на доске, удаляем заполненные линии
         remove_complete_lines()
-    
+
     def snap_to_grid(selected_figure_id):
         for figure_id in selected_figure_id:
             x1, y1, x2, y2 = board_canvas.coords(figure_id)
@@ -212,7 +213,6 @@ def start_game():
                         create_new_set_of_figures()  # Создаем новый набор фигур, если игра не окончена
                         placed_figures_count = 0
 
-            
     def motion(event):
         global selected_figure_ids, start_x, start_y
         if selected_figure_ids:
@@ -223,7 +223,6 @@ def start_game():
                     board_canvas.move(figure_id, dx, dy)
             start_x, start_y = event.x, event.y
 
-
     def is_figure_placed_correctly(coords):
         # Используем глобальные переменные для смещения доски
         global BOARD_X_OFFSET, BOARD_Y_OFFSET
@@ -231,9 +230,9 @@ def start_game():
         cell_size = 60
         # Проверяем, что координаты фигуры соответствуют границам клеток
         if ((coords[0] - BOARD_X_OFFSET) % cell_size == 0 and
-            (coords[1] - BOARD_Y_OFFSET) % cell_size == 0 and
-            (coords[2] - BOARD_X_OFFSET) % cell_size == 0 and
-            (coords[3] - BOARD_Y_OFFSET) % cell_size == 0):
+                (coords[1] - BOARD_Y_OFFSET) % cell_size == 0 and
+                (coords[2] - BOARD_X_OFFSET) % cell_size == 0 and
+                (coords[3] - BOARD_Y_OFFSET) % cell_size == 0):
             return True
         else:
             return False
@@ -246,8 +245,8 @@ def start_game():
             for figure_id in figure_list:
                 coords = board_canvas.coords(figure_id)
                 if len(coords) == 4:
-                    if (event.x > coords[0] and event.x < coords[2] 
-                    and event.y > coords[1] and event.y < coords[3]):
+                    if (event.x > coords[0] and event.x < coords[2]
+                            and event.y > coords[1] and event.y < coords[3]):
                         if figure_list in figure_ids[-3:]:
                             selected_figure_ids.append(figure_list)
                             start_x, start_y = event.x, event.y
@@ -264,8 +263,8 @@ def start_game():
         else:
             last_row_y = 0
         for i, figure in enumerate(new_figures):
-            draw_figure(figure, BOARD_WIDTH + 1, last_row_y+ i * 3)
-        
+            draw_figure(figure, BOARD_WIDTH + 1, last_row_y + i * 3)
+
     def reset_game():
         global SCORE, figure_ids, occupied_cells, placed_figures_count, selected_figure_ids, start_x, start_y, board
         # Сброс счета
@@ -307,6 +306,7 @@ def start_game():
         return False  # Если есть место для размещения всех трех фигур, возвращаем False - игра продолжается
 
     background_image = None
+
     def show_game_over_message():
         global background_image
         # Создаем новое окно
@@ -327,9 +327,9 @@ def start_game():
 
         # Размещаем окно по центру
         window.geometry(f"{window_width}x{window_height}+{position_right}+{position_top}")
-        
+
         # Загружаем изображение
-        background_image = PhotoImage(file="E:\BlockPuzzle\duck2.png")
+        background_image = PhotoImage(file="duck2.png")
 
         # Создаем метку с фоновым изображением
         background_label = Label(window, image=background_image)
@@ -354,18 +354,16 @@ def start_game():
         reset_game()
         stop_game()
 
-
     root = tk.Toplevel()
     root.geometry("1200x700")
     root.title("BLOCKPUZZLE")
     root.resizable(False, False)
 
-
     # Создать основное окно
     board_canvas = tk.Canvas(root, width=1500, height=1500, bg="white")
     board_canvas.pack(side="left")  # Изменено на левую сторону
 
-    image_path = "E:\BlockPuzzle\Group 16.png" # Укажите путь к вашему изображению
+    image_path = "Group 16.png"  # Укажите путь к вашему изображению
     image = tk.PhotoImage(file=image_path)
 
     # Отображение изображения на заднем фоне
@@ -379,10 +377,8 @@ def start_game():
     BOARD_X_OFFSET = 100
     BOARD_Y_OFFSET = 120  # Adjust this value to move the board lower
 
-
     draw_board()
     draw_figures()
-
 
     # Создать метку для отображения счета
     score_label = tk.Label(root, text="Счет: 0", font=("tahoma", 40), bg="#E0FFFF")
@@ -398,6 +394,7 @@ def start_game():
 
     center_window(root, offset_y=70)
     root.mainloop()
+
 
 def training():
     def exit_game():
@@ -417,7 +414,7 @@ def training():
     root.resizable(False, False)
 
     # Загружаем изображение
-    image_photo_path = "E:\BlockPuzzle\Group 23.png"  # Укажите путь к вашему изображению
+    image_photo_path = "Group 23.png"  # Укажите путь к вашему изображению
 
     # Отображаем изображение на вкладке с правилами
     image_photo = tk.PhotoImage(file=image_photo_path)
@@ -430,13 +427,14 @@ def training():
 
     center_window(root, offset_y=70)
     root.mainloop()
-    
-    
-#Create the main window
+
+
+# Create the main window
 root = tk.Tk()
 root.title("BlockPuzzle")
 root.geometry("1200x700")
 root.resizable(False, False)
+
 
 def center_window(window, offset_y=50):
     window.update_idletasks()
@@ -446,15 +444,16 @@ def center_window(window, offset_y=50):
     y = (window.winfo_screenheight() // 2) - (height // 2) - offset_y
     window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
-#Load the image
-image_path = "E:\BlockPuzzle\Group 1-7.png"
+
+# Load the image
+image_path = "Group 1-7.png"
 image = tk.PhotoImage(file=image_path)
 
-#Display the image
+# Display the image
 label = Label(root, image=image)
 label.pack(fill="both", expand=True)
 
-#Create canvas for Tetris figures
+# Create canvas for Tetris figures
 tetris_canvas = tk.Canvas(root, width=400, height=1300, bg="white")
 tetris_canvas.pack(side="right")
 
