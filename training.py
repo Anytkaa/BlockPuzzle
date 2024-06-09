@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import Label, Button
 
+from config import RULE_WINDOW_SIZE
+
 
 class RulesWindow:
     def __init__(self, master):
@@ -10,11 +12,11 @@ class RulesWindow:
     def setup_window(self):
         self.rules_window = tk.Toplevel(self.master)
         self.rules_window.title("Правила игры")
-        self.rules_window.geometry("1200x700")
+        self.rules_window.geometry(RULE_WINDOW_SIZE)
         self.rules_window.resizable(False, False)
 
         # Отображение изображения с правилами
-        image_path = "assets/Group 23.png"
+        image_path = "assets/rules.png"
         self.rules_image = tk.PhotoImage(file=image_path)
         label = Label(self.rules_window, image=self.rules_image)
         label.pack(fill="both", expand=True)

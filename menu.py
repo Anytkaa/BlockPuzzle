@@ -1,4 +1,6 @@
 import tkinter as tk
+
+from config import MENU_WINDOW_SIZE
 from game import Game
 from training import show_rules
 
@@ -11,11 +13,11 @@ class MainMenu:
     def setup_menu(self):
         # Основная настройка меню
         self.root.title("BlockPuzzle")
-        self.root.geometry("1200x700")
+        self.root.geometry(MENU_WINDOW_SIZE)
         self.root.resizable(False, False)
 
         # Загрузка и отображение фонового изображения
-        self.background_image = tk.PhotoImage(file="assets/Group 1-7.png")
+        self.background_image = tk.PhotoImage(file="assets/menu_background.png")
         self.background_label = tk.Label(self.root, image=self.background_image)
         self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
