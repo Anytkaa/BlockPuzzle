@@ -3,18 +3,18 @@ import random
 from config import CELL_SIZE
 
 figures = {
-    'O': {'color': 'Turquoise2', 'shape': ['02', '12', '01', '11'], 'size': (2, 2)},
+    'O': {'color': 'Turquoise2', 'shape': ['00', '01', '11', '10'], 'size': (2, 2)},
     'I': {'color': 'palegreen', 'shape': ['00', '01', '02', '03'], 'size': (1, 4)},
-    'J': {'color': 'coral', 'shape': ['01', '11', '21', '22'], 'size': (2, 3)},
-    'L': {'color': 'red2', 'shape': ['21', '11', '01', '00'], 'size': (2, 3)},
+    'J': {'color': 'coral', 'shape': ['00', '10', '20', '21'], 'size': (3, 2)},
+    'L': {'color': 'red2', 'shape': ['21', '11', '01', '00'], 'size': (3, 2)},
     'T': {'color': 'gold', 'shape': ['11', '01', '21', '10'], 'size': (3, 2)},
     'Z': {'color': 'Lightskyblue', 'shape': ['01', '11', '10', '20'], 'size': (3, 2)},
-    'S': {'color': 'hotpink1', 'shape': ['10', '11', '01', '02'], 'size': (3, 2)},
-    'E': {'color': 'orchid1', 'shape': ['00', '01', '02', '10'], 'size': (3, 2)},
-    'G': {'color': 'brown1', 'shape': ['01', '11', '21', '02'], 'size': (2, 3)},
-    'I_vert': {'color': 'cornflowerblue', 'shape': ['00', '10', '20', '30'], 'size': (1, 4)},
-    'T_right': {'color': 'seagreen1', 'shape': ['10', '11', '12', '01'], 'size': (3, 2)},
-    'T_vnis': {'color': 'mediumpurple1', 'shape': ['01', '11', '21', '12'], 'size': (2, 3)}
+    'S': {'color': 'hotpink1', 'shape': ['10', '11', '01', '02'], 'size': (2, 3)},
+    'E': {'color': 'orchid1', 'shape': ['00', '01', '02', '10'], 'size': (2, 3)},
+    'G': {'color': 'brown1', 'shape': ['00', '10', '20', '01'], 'size': (3, 2)},
+    'I_vert': {'color': 'cornflowerblue', 'shape': ['00', '10', '20', '30'], 'size': (4, 1)},
+    'T_right': {'color': 'seagreen1', 'shape': ['10', '11', '12', '01'], 'size': (2, 3)},
+    'T_vnis': {'color': 'mediumpurple1', 'shape': ['00', '10', '20', '11'], 'size': (3, 2)}
 }
 
 
@@ -23,6 +23,7 @@ class Figure:
     def __init__(self, tag, canvas=None, x=0, y=0):
         self.tag = tag
         self.type = random.choice(list(figures.keys()))
+        print(self.type)
         self.color = figures[self.type]['color']
         self.shape = figures[self.type]['shape']
         self.size = figures[self.type]['size']
