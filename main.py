@@ -1,18 +1,12 @@
 import tkinter as tk
-from game import Game
-from ui import center_window
+from menu import MainMenu
+
 
 def main():
     root = tk.Tk()
-    root.title("BlockPuzzle")
-    root.geometry("1200x700")
-    root.resizable(False, False)
-
-    game = Game(root)
-    game.start()
-
-    center_window(root, offset_y=70)
+    menu = MainMenu(root)
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
