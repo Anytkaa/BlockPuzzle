@@ -42,7 +42,7 @@ class Game:
 
     def draw_figure_widget(self, figure, x, y):
         """Рисует фигуру в боковой панели и привязывает событие нажатия."""
-        figure.draw()  # Рисуем фигуру на канвасе
+        figure.move(x, y)
         self.canvas.tag_bind(figure.tag, "<Button-1>", lambda event, f=figure: self.pick_figure(event, f))
 
     def update_figure_display(self):
@@ -54,9 +54,6 @@ class Game:
 
     def pick_figure(self, event, figure):
         """Обработчик выбора фигуры."""
-        if figure in self.figures:  # Если фигура находится в боковой панели
-            self.figures.remove(figure)  # Удалить фигуру из боковой панели
-            self.update_figure_display()  # Обновить отображение боковой панели
         self.active_figure = figure  # Сделать фигуру активной для перемещения
         # Запоминаем начальное смещение от клика до начальных координат фигуры
         self.offset_x = event.x - figure.x
@@ -74,6 +71,9 @@ class Game:
     def release(self, event):
         """Обрабатывает отпускание кнопки мыши."""
         if self.active_figure:  # Если это отпускание произошло при перетаскивании фигуры
+            if self.active_figure in self.figures:  # Если фигура находится в боковой панели
+                self.figures.remove(self.active_figure)  # Удалить фигуру из боковой панели
+                self.update_figure_display()  # Обновить отображение боковой панели
             if self.board.can_place_figure(self.active_figure):  # теперь вся информация о фигуре
                 # хранится в ней (в объекте), как и должно быть
                 self.board.place_figure_on_board(self.active_figure)
