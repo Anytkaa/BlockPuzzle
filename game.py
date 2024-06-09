@@ -1,27 +1,55 @@
 import tkinter as tk
 from board import Board
-from config import BOARD_WIDTH, BOARD_HEIGHT, CELL_SIZE, GAME_WINDOW_SIZE, FIGURES_COUNT, POINTS_PER_FIGURE
+from config import CELL_SIZE, GAME_WINDOW_SIZE, FIGURES_COUNT, POINTS_PER_FIGURE, FIGURE_GAP
 from figures import Figure
 from gameover import GameOverWindow
+from tkinter import PhotoImage, Label, Button
 
 
 class Game:
     def __init__(self, master):
+        # Переменные
         self.score = 0
-        self.master = master
-        self.master.title("BlockPuzzle Game")
-        self.master.geometry(GAME_WINDOW_SIZE)
-        self.canvas = tk.Canvas(self.master, width=600, height=600, bg="white")
-        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        self.board = Board(self.canvas, 100, 120)
-        self.score_label = tk.Label(self.master, text="0", font=("Arial", 24))
-        self.score_label.pack(side=tk.TOP, pady=20)
         self.figures_in_sidebar = []  # Список фигур в боковой панели
         self.figures = []  # Список всех невставленных фигур
         self.active_figure = None  # Активная фигура для перемещения, теперь это ссылка на объект
         # координаты смещения мышки относительно координат активной фигуры
         self.offset_x = None
         self.offset_y = None
+        # Внешний вид окна
+        self.master = master
+        self.master.title("BlockPuzzle Game")
+        self.master.geometry(GAME_WINDOW_SIZE)
+        self.master.resizable(False, False)
+
+        # Создание канваса для игрового поля
+        self.canvas = tk.Canvas(self.master, width=600, height=600, bg="white")
+        self.canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Загрузка и отображение фонового изображения
+        self.background_image = PhotoImage(file="assets/game_background.png")
+        self.canvas.create_image(0, 0, anchor="nw", image=self.background_image)
+
+        # Инициализация доски с смещениями
+        self.board = Board(self.canvas, 100, 120)
+        self.board.draw_board()
+
+        # Создание метки для отображения счета
+        self.score_label = tk.Label(self.master, text="Score: 0", font=("tahoma", 40), bg="#E0FFFF")
+        self.score_label.place(x=30, y=30)
+
+        # Кнопки управления игрой
+        self.exit_button = Button(self.master, text="Exit", command=self.master.destroy, font=("helvetica", 20),
+                                  fg="magenta3")
+        self.exit_button.config(bg='white', width=10, height=2)
+        self.exit_button.place(x=1000, y=35)
+
+        self.reset_button = Button(self.master, text="New Game", command=self.reset_game, font=("helvetica", 20),
+                                   fg="magenta3")
+        self.reset_button.config(bg='white', width=10, height=2)
+        self.reset_button.place(x=1000, y=205)
+
+        # Вызов методов инициализации
         self.setup_bindings()
         self.create_new_set_of_figures()
 
@@ -41,7 +69,7 @@ class Game:
             self.figures_in_sidebar.append(fig)
             self.figures.append(fig)
             self.draw_figure_widget(fig, 650, y_offset)
-            y_offset += fig.size[1] * CELL_SIZE + 20
+            y_offset += fig.size[1] * CELL_SIZE + FIGURE_GAP
 
         if self.board.check_game_over(self.figures):
             self.show_game_over_message()  # Показать сообщение о проигрыше
@@ -56,7 +84,7 @@ class Game:
         y_offset = 150
         for fig in self.figures_in_sidebar:
             self.draw_figure_widget(fig, 650, y_offset)
-            y_offset += fig.size[1] * CELL_SIZE + 20
+            y_offset += fig.size[1] * CELL_SIZE + FIGURE_GAP
 
     def pick_figure(self, event, figure):
         """Обработчик выбора фигуры."""
@@ -83,28 +111,22 @@ class Game:
             if self.board.can_place_figure(self.active_figure):  # теперь вся информация о фигуре
                 # хранится в ней (в объекте), как и должно быть
                 self.board.place_figure_on_board(self.active_figure)
+                self.update_score(POINTS_PER_FIGURE)  # повышаем счёт из-за поставленной фигуры
                 self.figures.remove(self.active_figure)
-                if len(self.figures) == 0:
+                if len(self.figures) == 0:  # если поместили вне фигуры
                     self.create_new_set_of_figures()
-                self.active_figure.clear()
-                self.update_score(POINTS_PER_FIGURE)
+                self.active_figure.clear()  # удаляем помещённую фигуру
             self.active_figure = None
 
     def update_score(self, amount):
         self.score += amount
         self.score_label.config(text=f"{self.score}")
 
-    def game_over(self):
-        pass
-
     def reset_game(self):
         self.board.clear_board()
         self.score = 0
         self.update_score(0)
         self.start()
-
-    def check_game_over(self):
-        pass
 
     def show_game_over_message(self):
         print("GAME OVER")

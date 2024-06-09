@@ -5,6 +5,7 @@ RULE_WINDOW_SIZE = "1200x700"
 
 # Настройка игры
 CELL_SIZE = 60
+FIGURE_GAP = 20  # Расстояние между фигурами в боковой панели фигур
 BOARD_WIDTH = 9
 BOARD_HEIGHT = 9
 FIGURES_COUNT = 3  # Количество новых фигур в каждом раунде
