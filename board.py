@@ -1,4 +1,5 @@
 from config import CELL_SIZE, BOARD_WIDTH, BOARD_HEIGHT
+from itertools import product
 
 
 class Board:
@@ -21,8 +22,13 @@ class Board:
                 )
 
     def can_place_figure(self, figure):
-        """Проверяет, можно ли поместить фигуру в текущее положение."""
+        """Проверяет, можно ли поместить фигуру в текущее положение где расположена фигура."""
+        # переводим координаты фигуры в номера ячеек
         x0, y0 = round((figure.x - self.x_offset) / CELL_SIZE), round((figure.y - self.y_offset) / CELL_SIZE)
+        return self.can_place_figure_in_cells(figure, x0, y0)
+
+    def can_place_figure_in_cells(self, figure, x0, y0):
+        """Проверяет, можно ли поместить фигуру в положение, задаваемое base_x base_y координатами ячейки."""
         for cell in figure.get_shape_positions():
             x, y = x0 + int(cell[0]), y0 + int(cell[1])
             if x < 0 or x >= BOARD_WIDTH or y < 0 or y >= BOARD_HEIGHT or self.cells[y][x]['occupied']:
@@ -46,3 +52,16 @@ class Board:
                 cell['color'] = 'white'
                 cell['occupied'] = False
         self.draw_board()
+
+    def check_game_over(self, figures):
+        """Проверяет, можно ли разместить все предложенные фигуры на доске одновременно."""
+        # Генерируем все возможные позиции для каждой фигуры на доске
+        all_positions = [list(product(range(BOARD_WIDTH), range(BOARD_HEIGHT))) for _ in figures]
+
+        # Пробуем все возможные комбинации позиций для каждой фигуры
+        for positions in product(*all_positions):
+            if all(self.can_place_figure_in_cells(fig, x, y) for fig, (x, y) in zip(figures, positions)):
+                # Возвращаем False, если нашли комбинацию, где все фигуры могут быть размещены
+                return False
+        # Если не нашли ни одной подходящей комбинации, возвращаем True - игра окончена
+        return True
