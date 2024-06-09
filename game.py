@@ -22,6 +22,7 @@ class Game:
         self.master.title("BlockPuzzle Game")
         self.master.geometry(GAME_WINDOW_SIZE)
         self.master.resizable(False, False)
+        self.master.protocol("WM_DELETE_WINDOW", self.on_close)
 
         # Создание канваса для игрового поля
         self.canvas = tk.Canvas(self.master, width=600, height=600, bg="white")
@@ -142,3 +143,7 @@ class Game:
         print("GAME OVER")
         GameOverWindow(self.master, self.score, self.reset_game)
         pass
+
+    def on_close(self):
+        """Обрабатывает закрытие окна игры и повторно открывает главное меню."""
+        self.master.destroy()  # Уничтожение текущего окна

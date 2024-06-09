@@ -41,7 +41,6 @@ class MainMenu:
 
     def start_game(self):
         # Запускает игровую сессию
-        self.root.withdraw()  # Скрывает главное окно
         game_window = tk.Toplevel(self.root)
         game = Game(game_window)
         game.start()
