@@ -59,3 +59,9 @@ class Figure:
 
     def get_shape_positions(self):
         return self.shape
+
+    def clear(self):
+        """ Удаляет фигуру с канваса, очищая все связанные с ней теги. """
+        for tag in self.tags:
+            self.canvas.delete(tag)
+        self.tags.clear()  # Очищаем список тегов после удаления всех элементов с канваса
