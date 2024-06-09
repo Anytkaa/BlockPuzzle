@@ -329,7 +329,7 @@ def start_game():
         window.geometry(f"{window_width}x{window_height}+{position_right}+{position_top}")
 
         # Загружаем изображение
-        background_image = PhotoImage(file="duck2.png")
+        background_image = PhotoImage(file="assets/duck2.png")
 
         # Создаем метку с фоновым изображением
         background_label = Label(window, image=background_image)
@@ -363,7 +363,7 @@ def start_game():
     board_canvas = tk.Canvas(root, width=1500, height=1500, bg="white")
     board_canvas.pack(side="left")  # Изменено на левую сторону
 
-    image_path = "Group 16.png"  # Укажите путь к вашему изображению
+    image_path = "assets/Group 16.png"  # Укажите путь к вашему изображению
     image = tk.PhotoImage(file=image_path)
 
     # Отображение изображения на заднем фоне
@@ -414,7 +414,7 @@ def training():
     root.resizable(False, False)
 
     # Загружаем изображение
-    image_photo_path = "Group 23.png"  # Укажите путь к вашему изображению
+    image_photo_path = "assets/Group 23.png"  # Укажите путь к вашему изображению
 
     # Отображаем изображение на вкладке с правилами
     image_photo = tk.PhotoImage(file=image_photo_path)
@@ -446,7 +446,7 @@ def center_window(window, offset_y=50):
 
 
 # Load the image
-image_path = "Group 1-7.png"
+image_path = "assets/Group 1-7.png"
 image = tk.PhotoImage(file=image_path)
 
 # Display the image
