@@ -128,6 +128,9 @@ class Game:
                 if len(self.figures) == 0:  # если поместили вне фигуры
                     self.active_figure = None
                     self.create_new_set_of_figures()
+                # Новая проверка проигрыша. Ведь можно поставить фигуру так, что места под другие уже не будет.
+                elif self.board.check_game_over(self.figures):
+                    self.show_game_over_message()  # Показать сообщение о проигрыше
             self.active_figure = None
 
     def update_score(self, amount):

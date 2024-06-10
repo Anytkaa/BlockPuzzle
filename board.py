@@ -1,5 +1,3 @@
-from itertools import product
-
 from config import CELL_SIZE, BOARD_WIDTH, BOARD_HEIGHT
 
 
@@ -61,16 +59,15 @@ class Board:
         self.draw_board()
 
     def check_game_over(self, figures):
-        """Проверяет, можно ли разместить все предложенные фигуры на доске одновременно."""
-        # Генерируем все возможные позиции для каждой фигуры на доске
-        all_positions = [list(product(range(BOARD_WIDTH), range(BOARD_HEIGHT))) for _ in figures]
-
-        # Пробуем все возможные комбинации позиций для каждой фигуры
-        for positions in product(*all_positions):
-            if all(self.can_place_figure_in_cells(fig, x, y) for fig, (x, y) in zip(figures, positions)):
-                # Возвращаем False, если нашли комбинацию, где все фигуры могут быть размещены
-                return False
-        # Если не нашли ни одной подходящей комбинации, возвращаем True - игра окончена
+        """Проверяет, можно ли разместить хотя бы одну из предложенных фигур на доске."""
+        # Перебираем каждую фигуру и проверяем, можно ли её где-то разместить на доске
+        for figure in figures:
+            for y in range(BOARD_HEIGHT):
+                for x in range(BOARD_WIDTH):
+                    if self.can_place_figure_in_cells(figure, x, y):
+                        # Возвращаем False, если нашли хотя бы одну фигуру, которую можно разместить
+                        return False
+        # Если не нашли ни одного подходящего места для размещения какой-либо из фигур, возвращаем True - игра окончена
         return True
 
     def remove_complete_lines(self):
